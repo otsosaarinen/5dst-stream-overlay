@@ -6,6 +6,7 @@ import Gameplay from "./Gameplay";
 import Mappool from "./Mappool";
 import Showcase from "./Showcase";
 import Countdown from "./Countdown";
+import Winner from "./Winner";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")!).render(
 				<Route path="/mappool" element={<Mappool />} />
 				<Route path="/showcase" element={<Showcase />} />
 				<Route path="/countdown" element={<Countdown />} />
+				<Route path="/winner" element={<Winner />} />
 			</Routes>
 		</BrowserRouter>
 	</StrictMode>,
