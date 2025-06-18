@@ -1,5 +1,5 @@
 function Gameplay() {
-  return <></>;
+	return <></>;
 }
 
 export default Gameplay;

@@ -7,13 +7,13 @@ import Mappool from "./Mappool";
 import Showcase from "./Showcase";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/gameplay" element={<Gameplay />} />
-        <Route path="/mappool" element={<Mappool />} />
-        <Route path="/showcase" element={<Showcase />} />
-      </Routes>
-    </BrowserRouter>
-  </StrictMode>,
+	<StrictMode>
+		<BrowserRouter>
+			<Routes>
+				<Route path="/gameplay" element={<Gameplay />} />
+				<Route path="/mappool" element={<Mappool />} />
+				<Route path="/showcase" element={<Showcase />} />
+			</Routes>
+		</BrowserRouter>
+	</StrictMode>,
 );
