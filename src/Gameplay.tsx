@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
+import { useEffect, useState } from "react";
+import { CountUp } from "countup.js";
 
 function Gameplay() {
 	// set match variables
-	const [bestOf, setBestOf] = useState<string>("");
+	const [bestOf, setBestOf] = useState<number>(0);
+	const firstTo: number = Math.ceil(bestOf / 2);
+	const [chatMessages, setChatMessages] = useState<string[]>([]);
+	const [beatmapSetId, setBeatmapSetId] = useState<string>("");
 
 	const [leftPlayer, setLeftPlayer] = useState<string>("");
 	const [leftPlayerCountry, setLeftPlayerCountry] = useState<string>("");
@@ -36,6 +40,7 @@ function Gameplay() {
 			const data = JSON.parse(message.data);
 
 			setBestOf(data.tourney.bestOF);
+			setBeatmapSetId(data.beatmap.set);
 
 			setLeftPlayer(data.tourney.clients[0].user.name);
 			setLeftPlayerCountry(data.tourney.clients[0].user.country);
@@ -56,19 +61,45 @@ function Gameplay() {
 
 	return (
 		<>
-			<div className="font-figtree h-screen w-screen bg-amber-200 text-neutral-900">
-				<div className="flex flex-row items-center justify-between">
+			<div className="font-figtree flex min-h-screen w-screen flex-col bg-amber-200 text-neutral-900">
+				<div className="flex flex-row items-start justify-between bg-green-200">
 					<div className="ml-5 text-left">
-						<p className="text-3xl">{leftPlayer}</p>
+						<p className="text-3xl font-semibold">{leftPlayer}</p>
 						<p className="text-xl">{leftPlayerCountry}</p>
 						<p className="text-xl">{leftPlayerScore}</p>
+						<div className="flex flex-row gap-2">
+							{Array.from({ length: firstTo }).map((_, index) => (
+								<div
+									key={index}
+									className="border-3 border-neutral-900 p-3"
+								></div>
+							))}
+						</div>
 					</div>
 					<div className="text-7xl font-bold">5DST4</div>
 					<div className="mr-5 text-right">
-						<p className="text-3xl">{rightPlayer}</p>
+						<p className="text-3xl font-semibold">{rightPlayer}</p>
 						<p className="text-xl">{rightPlayerCountry}</p>
 						<p className="text-xl">{rightPlayerScore}</p>
+						<div className="flex flex-row gap-2">
+							{Array.from({ length: firstTo }).map((_, index) => (
+								<div
+									key={index}
+									className="border-3 border-neutral-900 p-3"
+								></div>
+							))}
+						</div>
 					</div>
+				</div>
+				<div className="h-150 bg-red-200"></div>
+				<div className="flex grow flex-row items-center justify-between bg-blue-200">
+					<div className="h-full w-100">
+						<img
+							src={`https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg`}
+							alt=""
+						/>
+					</div>
+					<div>chat</div>
 				</div>
 			</div>
 		</>
