@@ -5,6 +5,7 @@ import "./Globals.css";
 import Gameplay from "./Gameplay";
 import Mappool from "./Mappool";
 import Showcase from "./Showcase";
+import Countdown from "./Countdown";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById("root")!).render(
 				<Route path="/gameplay" element={<Gameplay />} />
 				<Route path="/mappool" element={<Mappool />} />
 				<Route path="/showcase" element={<Showcase />} />
+				<Route path="/countdown" element={<Countdown />} />
 			</Routes>
 		</BrowserRouter>
 	</StrictMode>,
