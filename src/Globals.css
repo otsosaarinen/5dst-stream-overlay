@@ -3,4 +3,7 @@
 
 @theme {
 	--font-figtree: "Figtree";
+
+	--color-main: #44c24e;
+	--color-text: #242424;
 }
