@@ -2,7 +2,7 @@ import { TosuWebSocket } from "./WebSocket";
 import { useEffect, useState, useRef, useMemo } from "react";
 import { CountUp } from "countup.js";
 
-function Gameplay() {
+function Countdown() {
 	// set match variables
 	const [bestOf, setBestOf] = useState<number>(0);
 	const firstTo = useMemo(() => Math.ceil(bestOf / 2), [bestOf]);
@@ -232,4 +232,4 @@ function Gameplay() {
 	);
 }
 
-export default Gameplay;
+export default Countdown;
