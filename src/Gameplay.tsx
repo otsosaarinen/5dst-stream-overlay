@@ -1,11 +1,11 @@
-import ReconnectingWebSocket from "reconnecting-websocket";
-import { useEffect, useState, useRef } from "react";
+import { TosuWebSocket } from "./WebSocket";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { CountUp } from "countup.js";
 
 function Gameplay() {
 	// set match variables
 	const [bestOf, setBestOf] = useState<number>(0);
-	const firstTo: number = Math.ceil(bestOf / 2);
+	const firstTo = useMemo(() => Math.ceil(bestOf / 2), [bestOf]);
 
 	const [beatmapSetId, setBeatmapSetId] = useState<string>("");
 	const [beatmapArtist, setBeatmapArtist] = useState<string>("");
@@ -69,71 +69,50 @@ function Gameplay() {
 		}
 	}, [rightPlayerScore]);
 
+	const data = TosuWebSocket();
+
 	useEffect(() => {
-		const socket = new ReconnectingWebSocket(
-			"ws://localhost:24050/websocket/v2",
+		if (!data) {
+			return;
+		}
+
+		setBestOf(data.tourney.bestOF);
+		setBeatmapSetId(data.beatmap.set);
+
+		setBeatmapArtist(data.beatmap.artist);
+		setBeatmapTitle(data.beatmap.title);
+		setBeatmapDifficultyName(data.beatmap.version);
+		setBeatmapMapper(data.beatmap.mapper);
+		setBeatmapSr(data.beatmap.stats.stars.total);
+		setBeatmapAr(data.beatmap.stats.ar.converted);
+		setBeatmapCs(data.beatmap.stats.cs.converted);
+		setBeatmapOd(data.beatmap.stats.od.converted);
+		setBeatmapBpm(data.beatmap.stats.bpm.common);
+
+		// calculate beatmap length
+		const firstObject = data.beatmap.time.firstObject;
+		const lastObject = data.beatmap.time.lastObject;
+		const seconds = Math.floor(((lastObject - firstObject) / 1000) % 60);
+		const minutes = Math.floor((lastObject - firstObject) / 1000 / 60);
+		setBeatmapLength(
+			`${minutes.toString()}:${seconds.toString().padStart(2, "0")}`,
 		);
 
-		socket.onopen = () => {
-			console.log("Websocket connection opened");
-		};
+		// only set these variables if clients exist
+		if (data.tourney.clients.length > 0) {
+			setLeftPlayer(data.tourney.clients[0].user.name);
+			setLeftPlayerUserId(data.tourney.clients[0].user.id);
+			setLeftPlayerCountry(data.tourney.clients[0].user.country);
+			setLeftPlayerScore(data.tourney.clients[0].play.score);
+			setLeftPlayerPoints(data.tourney.points.left);
 
-		socket.onclose = () => {
-			console.log("Websocket connection closed");
-		};
-
-		socket.onerror = (error) => {
-			console.log("Error with websocket: ", error);
-		};
-
-		socket.onmessage = (message: MessageEvent) => {
-			const data = JSON.parse(message.data);
-
-			setBestOf(data.tourney.bestOF);
-			setBeatmapSetId(data.beatmap.set);
-
-			setBeatmapArtist(data.beatmap.artist);
-			setBeatmapTitle(data.beatmap.title);
-			setBeatmapDifficultyName(data.beatmap.version);
-			setBeatmapMapper(data.beatmap.mapper);
-			setBeatmapSr(data.beatmap.stats.stars.total);
-			setBeatmapAr(data.beatmap.stats.ar.converted);
-			setBeatmapCs(data.beatmap.stats.cs.converted);
-			setBeatmapOd(data.beatmap.stats.od.converted);
-			setBeatmapBpm(data.beatmap.stats.bpm.common);
-
-			// calculate beatmap length
-			const firstObject = data.beatmap.time.firstObject;
-			const lastObject = data.beatmap.time.lastObject;
-			const seconds = Math.floor(
-				((lastObject - firstObject) / 1000) % 60,
-			);
-			const minutes = Math.floor((lastObject - firstObject) / 1000 / 60);
-			setBeatmapLength(
-				`${minutes.toString()}:${seconds.toString().padStart(2, "0")}`,
-			);
-
-			// only set these variables if clients exist
-			if (data.tourney.clients.length > 0) {
-				setLeftPlayer(data.tourney.clients[0].user.name);
-				setLeftPlayerUserId(data.tourney.clients[0].user.id);
-				setLeftPlayerCountry(data.tourney.clients[0].user.country);
-				setLeftPlayerScore(data.tourney.clients[0].play.score);
-				setLeftPlayerPoints(data.tourney.points.left);
-
-				setRightPlayer(data.tourney.clients[1].user.name);
-				setRightPlayerUserId(data.tourney.clients[1].user.id);
-				setRightPlayerCountry(data.tourney.clients[1].user.country);
-				setRightPlayerScore(data.tourney.clients[1].play.score);
-				setRightPlayerPoints(data.tourney.points.right);
-			}
-		};
-
-		// Clean up on unmount
-		return () => {
-			socket.close();
-		};
-	}, []);
+			setRightPlayer(data.tourney.clients[1].user.name);
+			setRightPlayerUserId(data.tourney.clients[1].user.id);
+			setRightPlayerCountry(data.tourney.clients[1].user.country);
+			setRightPlayerScore(data.tourney.clients[1].play.score);
+			setRightPlayerPoints(data.tourney.points.right);
+		}
+	}, [data]);
 
 	return (
 		<>
