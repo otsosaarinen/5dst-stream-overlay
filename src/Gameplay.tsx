@@ -6,8 +6,18 @@ function Gameplay() {
 	// set match variables
 	const [bestOf, setBestOf] = useState<number>(0);
 	const firstTo: number = Math.ceil(bestOf / 2);
-	const [chatMessages, setChatMessages] = useState<string[]>([]);
+
 	const [beatmapSetId, setBeatmapSetId] = useState<string>("");
+	const [beatmapArtist, setBeatmapArtist] = useState<string>("");
+	const [beatmapTitle, setBeatmapTitle] = useState<string>("");
+	const [beatmapDifficultyName, setBeatmapDifficultyName] =
+		useState<string>("");
+	const [beatmapMapper, setBeatmapMapper] = useState<string>("");
+	const [beatmapSr, setBeatmapSr] = useState<number>();
+	const [beatmapAr, setBeatmapAr] = useState<number>();
+	const [beatmapCs, setBeatmapCs] = useState<number>();
+	const [beatmapOd, setBeatmapOd] = useState<number>();
+	const [beatmapBpm, setBeatmapBpm] = useState<number>();
 
 	const [leftPlayer, setLeftPlayer] = useState<string>("");
 	const [leftPlayerCountry, setLeftPlayerCountry] = useState<string>("");
@@ -18,6 +28,8 @@ function Gameplay() {
 	const [rightPlayerCountry, setRightPlayerCountry] = useState<string>("");
 	const [rightPlayerScore, setRightPlayerScore] = useState<number>(0);
 	const [rightPlayerPoints, setRightPlayerPoints] = useState<number>(0);
+
+	const [chatMessages, setChatMessages] = useState<string[]>([]);
 
 	useEffect(() => {
 		const socket = new ReconnectingWebSocket(
@@ -42,15 +54,28 @@ function Gameplay() {
 			setBestOf(data.tourney.bestOF);
 			setBeatmapSetId(data.beatmap.set);
 
-			setLeftPlayer(data.tourney.clients[0].user.name);
-			setLeftPlayerCountry(data.tourney.clients[0].user.country);
-			setLeftPlayerScore(data.tourney.clients[0].play.score);
-			setLeftPlayerPoints(data.tourney.points.left);
+			setBeatmapArtist(data.beatmap.artist);
+			setBeatmapTitle(data.beatmap.title);
+			setBeatmapDifficultyName(data.beatmap.version);
+			setBeatmapMapper(data.beatmap.mapper);
+			setBeatmapSr(data.beatmap.stats.stars.total);
+			setBeatmapAr(data.beatmap.stats.ar.converted);
+			setBeatmapCs(data.beatmap.stats.cs.converted);
+			setBeatmapOd(data.beatmap.stats.od.converted);
+			setBeatmapBpm(data.beatmap.stats.bpm.common);
 
-			setRightPlayer(data.tourney.clients[1].user.name);
-			setRightPlayerCountry(data.tourney.clients[1].user.country);
-			setRightPlayerScore(data.tourney.clients[1].play.score);
-			setRightPlayerPoints(data.tourney.points.right);
+			// only set these variables if clients exist
+			if (data.tourney.clients.length > 0) {
+				setLeftPlayer(data.tourney.clients[0].user.name);
+				setLeftPlayerCountry(data.tourney.clients[0].user.country);
+				setLeftPlayerScore(data.tourney.clients[0].play.score);
+				setLeftPlayerPoints(data.tourney.points.left);
+
+				setRightPlayer(data.tourney.clients[1].user.name);
+				setRightPlayerCountry(data.tourney.clients[1].user.country);
+				setRightPlayerScore(data.tourney.clients[1].play.score);
+				setRightPlayerPoints(data.tourney.points.right);
+			}
 		};
 
 		// Clean up on unmount
@@ -61,8 +86,8 @@ function Gameplay() {
 
 	return (
 		<>
-			<div className="font-figtree flex min-h-screen w-screen flex-col bg-amber-200 text-neutral-900">
-				<div className="flex flex-row items-start justify-between bg-green-200">
+			<div className="font-figtree flex min-h-screen w-screen flex-col text-neutral-900">
+				<div className="flex h-25 flex-row items-center justify-between bg-green-500">
 					<div className="ml-5 text-left">
 						<p className="text-3xl font-semibold">{leftPlayer}</p>
 						<p className="text-xl">{leftPlayerCountry}</p>
@@ -91,13 +116,44 @@ function Gameplay() {
 						</div>
 					</div>
 				</div>
-				<div className="h-150 bg-red-200"></div>
-				<div className="flex grow flex-row items-center justify-between bg-blue-200">
-					<div className="h-full w-100">
+				<div className="grow"></div>
+				<div className="flex h-60 flex-row items-center justify-between bg-green-500">
+					<div className="flex h-full flex-row items-end justify-center gap-3">
 						<img
 							src={`https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg`}
 							alt=""
+							className="h-30 w-auto object-contain brightness-50"
 						/>
+						<div className="flex flex-col gap-1 text-2xl">
+							<p className="bg-white p-1">
+								{beatmapTitle} - {beatmapArtist} [
+								{beatmapDifficultyName}] by {beatmapMapper}
+							</p>
+							<p className="text-xl">
+								SR:{" "}
+								<span className="text-2xl font-bold text-white italic">
+									{beatmapSr}
+								</span>{" "}
+								BPM:{" "}
+								<span className="text-2xl font-bold text-white italic">
+									{beatmapBpm}
+								</span>
+							</p>
+							<p className="text-xl">
+								AR:{" "}
+								<span className="text-2xl font-bold text-white italic">
+									{beatmapAr}
+								</span>{" "}
+								OD:{" "}
+								<span className="text-2xl font-bold text-white italic">
+									{beatmapOd}
+								</span>{" "}
+								CS:{" "}
+								<span className="text-2xl font-bold text-white italic">
+									{beatmapCs}
+								</span>
+							</p>
+						</div>
 					</div>
 					<div>chat</div>
 				</div>
