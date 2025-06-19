@@ -192,8 +192,12 @@ function Gameplay() {
 				<div className="grow"></div>
 				<div className="flex h-60 flex-col items-center justify-between bg-green-500">
 					<div className="flex h-full flex-row items-center justify-center gap-5 text-4xl font-extrabold">
-						<span ref={leftScoreRef}>0</span>
-						<span ref={rightScoreRef}>0</span>
+						<div className="w-50 text-right">
+							<span ref={leftScoreRef}>0</span>
+						</div>
+						<div className="w-50 text-left">
+							<span ref={rightScoreRef}>0</span>
+						</div>
 					</div>
 					<div className="flex w-full flex-row justify-between">
 						<div className="flex h-full items-end justify-start">
