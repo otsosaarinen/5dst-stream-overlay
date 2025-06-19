@@ -21,11 +21,13 @@ function Gameplay() {
 	const [beatmapBpm, setBeatmapBpm] = useState<number>();
 
 	const [leftPlayer, setLeftPlayer] = useState<string>("");
+	const [leftPlayerUserId, setLeftPlayerUserId] = useState<number>();
 	const [leftPlayerCountry, setLeftPlayerCountry] = useState<string>("");
 	const [leftPlayerScore, setLeftPlayerScore] = useState<number>(0);
 	const [leftPlayerPoints, setLeftPlayerPoints] = useState<number>(0);
 
 	const [rightPlayer, setRightPlayer] = useState<string>("");
+	const [rightPlayerUserId, setRightPlayerUserId] = useState<number>();
 	const [rightPlayerCountry, setRightPlayerCountry] = useState<string>("");
 	const [rightPlayerScore, setRightPlayerScore] = useState<number>(0);
 	const [rightPlayerPoints, setRightPlayerPoints] = useState<number>(0);
@@ -79,11 +81,13 @@ function Gameplay() {
 			// only set these variables if clients exist
 			if (data.tourney.clients.length > 0) {
 				setLeftPlayer(data.tourney.clients[0].user.name);
+				setLeftPlayerUserId(data.tourney.clients[0].user.id);
 				setLeftPlayerCountry(data.tourney.clients[0].user.country);
 				setLeftPlayerScore(data.tourney.clients[0].play.score);
 				setLeftPlayerPoints(data.tourney.points.left);
 
 				setRightPlayer(data.tourney.clients[1].user.name);
+				setRightPlayerUserId(data.tourney.clients[0].user.id);
 				setRightPlayerCountry(data.tourney.clients[1].user.country);
 				setRightPlayerScore(data.tourney.clients[1].play.score);
 				setRightPlayerPoints(data.tourney.points.right);
@@ -99,30 +103,52 @@ function Gameplay() {
 	return (
 		<>
 			<div className="font-figtree flex min-h-screen w-screen flex-col text-neutral-900">
-				<div className="flex h-25 flex-row items-center justify-between bg-green-500">
+				<div className="flex h-30 flex-row items-center justify-between bg-green-500">
 					<div className="ml-5 text-left">
-						<p className="text-3xl font-semibold">{leftPlayer}</p>
+						<p className="flex flex-row gap-2 text-3xl font-semibold">
+							<img
+								src={`https://a.ppy.sh/${leftPlayerUserId}`}
+								alt=""
+								className="h-10"
+							/>
+							<span>{leftPlayer}</span>
+						</p>
 						<p className="text-xl">{leftPlayerCountry}</p>
 
 						<div className="flex flex-row gap-2">
 							{Array.from({ length: firstTo }).map((_, index) => (
 								<div
 									key={index}
-									className="border-3 border-neutral-900 p-3"
+									className={`transform border-3 border-neutral-900 p-3 transition-all duration-300 ${
+										index < leftPlayerPoints
+											? "scale-110 bg-neutral-900"
+											: "scale-100 bg-transparent"
+									}`}
 								></div>
 							))}
 						</div>
 					</div>
 					<div className="text-7xl font-bold">5DST4</div>
 					<div className="mr-5 text-right">
-						<p className="text-3xl font-semibold">{rightPlayer}</p>
+						<p className="flex flex-row justify-end gap-2 text-3xl font-semibold">
+							<span>{rightPlayer}</span>
+							<img
+								src={`https://a.ppy.sh/${rightPlayerUserId}`}
+								alt=""
+								className="h-10"
+							/>
+						</p>
 						<p className="text-xl">{rightPlayerCountry}</p>
 
-						<div className="flex flex-row gap-2">
+						<div className="flex flex-row-reverse gap-2">
 							{Array.from({ length: firstTo }).map((_, index) => (
 								<div
 									key={index}
-									className="border-3 border-neutral-900 p-3"
+									className={`transform border-3 border-neutral-900 p-3 transition-all duration-300 ${
+										index < rightPlayerPoints
+											? "scale-110 bg-neutral-900"
+											: "scale-100 bg-transparent"
+									}`}
 								></div>
 							))}
 						</div>
@@ -130,8 +156,9 @@ function Gameplay() {
 				</div>
 				<div className="grow"></div>
 				<div className="flex h-60 flex-col items-center justify-between bg-green-500">
-					<div className="flex h-full items-center justify-center text-4xl">
-						{leftPlayerScore} {rightPlayerScore}
+					<div className="flex h-full flex-row items-center justify-center gap-5 text-4xl font-extrabold">
+						<span>{leftPlayerScore}</span>
+						<span>{rightPlayerScore}</span>
 					</div>
 					<div className="flex w-full flex-row justify-between">
 						<div className="flex h-full items-end justify-start">
