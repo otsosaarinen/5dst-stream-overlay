@@ -13,6 +13,8 @@ function Nowplaying() {
 	const [rightPlayer, setRightPlayer] = useState<string>("");
 	const [rightPlayerUserId, setRightPlayerUserId] = useState<number>();
 
+	const [round, setRound] = useState<string>("");
+
 	const [timeLeft, setTimeLeft] = useState<{
 		minutes: number;
 		seconds: number;
@@ -28,7 +30,7 @@ function Nowplaying() {
 		setBeatmapArtist(data.beatmap.artist);
 		setBeatmapTitle(data.beatmap.title);
 
-		if (data.tourney.clients.length > 0) {
+		if (data.tourney.clients.length > 0 && matchData.showcase === false) {
 			setLeftPlayer(data.tourney.clients[0].user.name);
 			setLeftPlayerUserId(data.tourney.clients[0].user.id);
 
@@ -49,15 +51,41 @@ function Nowplaying() {
 		const seconds = totalSeconds % 60;
 
 		setTimeLeft({ minutes, seconds });
+		setRound(matchData.round);
 	}, [data]);
 	return (
 		<>
-			<div className="font-figtree text-main flex h-screen w-screen flex-col items-center justify-center gap-10 bg-white text-xl">
+			<div className="font-figtree text-main flex h-screen w-screen flex-col items-center justify-center gap-15 bg-white text-xl">
 				<div className="text-2xl">
 					Starting in{" "}
 					{timeLeft
-						? `${timeLeft.minutes.toString()}:${timeLeft.seconds.toString()}`
+						? `${timeLeft.minutes.toString()}:${timeLeft.seconds.toString().padStart(2, "0")}`
 						: "Loading..."}
+				</div>
+				<div className="text-4xl font-bold">
+					{matchData.showcase === true ? (
+						<div>{round} Mappool Showcase</div>
+					) : (
+						<div className="flex flex-row items-center justify-center gap-3">
+							<div className="flex flex-row items-center justify-center gap-3">
+								<img
+									src={`https://a.ppy.sh/${rightPlayerUserId}`}
+									alt=""
+									className="h-15"
+								/>
+								<div>{leftPlayer}</div>
+							</div>
+							<span className="text-2xl font-medium">vs</span>
+							<div className="flex flex-row-reverse items-center justify-center gap-3">
+								<img
+									src={`https://a.ppy.sh/${leftPlayerUserId}`}
+									alt=""
+									className="h-15"
+								/>
+								<div>{rightPlayer}</div>
+							</div>
+						</div>
+					)}
 				</div>
 				<div className="flex flex-col gap-2">
 					<div className="flex flex-row items-center justify-center gap-2">
