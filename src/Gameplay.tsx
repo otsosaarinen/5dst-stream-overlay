@@ -87,7 +87,7 @@ function Gameplay() {
 				setLeftPlayerPoints(data.tourney.points.left);
 
 				setRightPlayer(data.tourney.clients[1].user.name);
-				setRightPlayerUserId(data.tourney.clients[0].user.id);
+				setRightPlayerUserId(data.tourney.clients[1].user.id);
 				setRightPlayerCountry(data.tourney.clients[1].user.country);
 				setRightPlayerScore(data.tourney.clients[1].play.score);
 				setRightPlayerPoints(data.tourney.points.right);
