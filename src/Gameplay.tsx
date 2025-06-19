@@ -118,44 +118,47 @@ function Gameplay() {
 				</div>
 				<div className="grow"></div>
 				<div className="flex h-60 flex-row items-center justify-between bg-green-500">
-					<div className="flex h-full flex-row items-end justify-center gap-3">
-						<img
-							src={`https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg`}
-							alt=""
-							className="h-30 w-auto object-contain brightness-50"
-						/>
-						<div className="flex flex-col gap-1 text-2xl">
-							<p className="bg-white p-1">
-								{beatmapTitle} - {beatmapArtist} [
-								{beatmapDifficultyName}] by {beatmapMapper}
-							</p>
-							<p className="text-xl">
-								SR:{" "}
-								<span className="text-2xl font-bold text-white italic">
-									{beatmapSr}
-								</span>{" "}
-								BPM:{" "}
-								<span className="text-2xl font-bold text-white italic">
-									{beatmapBpm}
-								</span>
-							</p>
-							<p className="text-xl">
-								AR:{" "}
-								<span className="text-2xl font-bold text-white italic">
-									{beatmapAr}
-								</span>{" "}
-								OD:{" "}
-								<span className="text-2xl font-bold text-white italic">
-									{beatmapOd}
-								</span>{" "}
-								CS:{" "}
-								<span className="text-2xl font-bold text-white italic">
-									{beatmapCs}
-								</span>
-							</p>
+					<div className="flex h-full items-end justify-start">
+						<div
+							className="relative h-40 w-2xl bg-cover bg-no-repeat text-white"
+							style={{
+								backgroundImage: `url(https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg)`,
+							}}
+						>
+							<div className="absolute h-full w-full bg-black opacity-70"></div>
+							<div className="relative flex flex-col p-2">
+								<p className="text-2xl font-bold">
+									{beatmapTitle} - {beatmapArtist} [
+									{beatmapDifficultyName}] by {beatmapMapper}
+								</p>
+								<p className="text-xl">
+									SR:{" "}
+									<span className="text-2xl font-bold text-green-500 italic">
+										{beatmapSr}
+									</span>{" "}
+									BPM:{" "}
+									<span className="text-2xl font-bold text-green-500 italic">
+										{beatmapBpm}
+									</span>
+								</p>
+								<p className="text-xl">
+									AR:{" "}
+									<span className="text-2xl font-bold text-green-500 italic">
+										{beatmapAr}
+									</span>{" "}
+									OD:{" "}
+									<span className="text-2xl font-bold text-green-500 italic">
+										{beatmapOd}
+									</span>{" "}
+									CS:{" "}
+									<span className="text-2xl font-bold text-green-500 italic">
+										{beatmapCs}
+									</span>
+								</p>
+							</div>
 						</div>
 					</div>
-					<div>chat</div>
+					<div className="h-full">chat</div>
 				</div>
 			</div>
 		</>
