@@ -116,8 +116,8 @@ function Gameplay() {
 
 	return (
 		<>
-			<div className="font-figtree flex min-h-screen w-screen flex-col text-neutral-900">
-				<div className="flex h-30 flex-row items-center justify-between bg-green-500">
+			<div className="font-figtree text-text flex min-h-screen w-screen flex-col">
+				<div className="bg-main flex h-30 flex-row items-center justify-between">
 					<div className="ml-5 text-left">
 						<p className="flex flex-row gap-2 text-3xl font-semibold">
 							<img
@@ -169,7 +169,7 @@ function Gameplay() {
 					</div>
 				</div>
 				<div className="grow"></div>
-				<div className="flex h-60 flex-col items-center justify-between bg-green-500">
+				<div className="bg-main flex h-60 flex-col items-center justify-between">
 					<div className="flex h-full flex-row items-center justify-center gap-5 text-4xl font-extrabold">
 						<div className="w-50 text-right">
 							<span ref={leftScoreRef}>0</span>
@@ -186,7 +186,7 @@ function Gameplay() {
 									backgroundImage: `url(https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg)`,
 								}}
 							>
-								<div className="absolute h-full w-full bg-black opacity-65"></div>
+								<div className="absolute h-full w-full bg-black opacity-70"></div>
 								<div className="relative flex flex-col p-2">
 									<p className="text-2xl font-bold">
 										{beatmapTitle} - {beatmapArtist} [
@@ -195,29 +195,29 @@ function Gameplay() {
 									</p>
 									<p className="text-xl">
 										SR:{" "}
-										<span className="text-2xl font-bold text-green-500 italic">
+										<span className="text-main text-2xl font-bold italic">
 											{beatmapSr}
 										</span>{" "}
 										BPM:{" "}
-										<span className="text-2xl font-bold text-green-500 italic">
+										<span className="text-main text-2xl font-bold italic">
 											{beatmapBpm}
 										</span>{" "}
 										Length:{" "}
-										<span className="text-2xl font-bold text-green-500 italic">
+										<span className="text-main text-2xl font-bold italic">
 											{beatmapLength}
 										</span>
 									</p>
 									<p className="text-xl">
 										AR:{" "}
-										<span className="text-2xl font-bold text-green-500 italic">
+										<span className="text-main text-2xl font-bold italic">
 											{beatmapAr}
 										</span>{" "}
 										OD:{" "}
-										<span className="text-2xl font-bold text-green-500 italic">
+										<span className="text-main text-2xl font-bold italic">
 											{beatmapOd}
 										</span>{" "}
 										CS:{" "}
-										<span className="text-2xl font-bold text-green-500 italic">
+										<span className="text-main text-2xl font-bold italic">
 											{beatmapCs}
 										</span>
 									</p>
