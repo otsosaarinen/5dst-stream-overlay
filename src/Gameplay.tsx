@@ -13,6 +13,7 @@ function Gameplay() {
 	const [beatmapDifficultyName, setBeatmapDifficultyName] =
 		useState<string>("");
 	const [beatmapMapper, setBeatmapMapper] = useState<string>("");
+	const [beatmapLength, setBeatmapLength] = useState<string>("");
 	const [beatmapSr, setBeatmapSr] = useState<number>();
 	const [beatmapAr, setBeatmapAr] = useState<number>();
 	const [beatmapCs, setBeatmapCs] = useState<number>();
@@ -58,6 +59,19 @@ function Gameplay() {
 			setBeatmapTitle(data.beatmap.title);
 			setBeatmapDifficultyName(data.beatmap.version);
 			setBeatmapMapper(data.beatmap.mapper);
+
+			const firstObject = data.beatmap.time.firstObject;
+			const lastObject = data.beatmap.time.lastObject;
+
+			const seconds = Math.floor(
+				((lastObject - firstObject) / 1000) % 60,
+			);
+			const minutes = Math.floor((lastObject - firstObject) / 1000 / 60);
+
+			setBeatmapLength(
+				`${minutes.toString()}:${seconds.toString().padStart(2, "0")}`,
+			);
+
 			setBeatmapSr(data.beatmap.stats.stars.total);
 			setBeatmapAr(data.beatmap.stats.ar.converted);
 			setBeatmapCs(data.beatmap.stats.cs.converted);
@@ -139,6 +153,10 @@ function Gameplay() {
 									BPM:{" "}
 									<span className="text-2xl font-bold text-green-500 italic">
 										{beatmapBpm}
+									</span>{" "}
+									Length:{" "}
+									<span className="text-2xl font-bold text-green-500 italic">
+										{beatmapLength}
 									</span>
 								</p>
 								<p className="text-xl">
