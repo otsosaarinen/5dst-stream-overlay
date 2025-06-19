@@ -1,5 +1,5 @@
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { CountUp } from "countup.js";
 
 function Gameplay() {
@@ -33,6 +33,41 @@ function Gameplay() {
 	const [rightPlayerPoints, setRightPlayerPoints] = useState<number>(0);
 
 	const [chatMessages, setChatMessages] = useState<string[]>([]);
+
+	// set CountUp references
+	const leftScoreRef = useRef<HTMLSpanElement>(null);
+	const rightScoreRef = useRef<HTMLSpanElement>(null);
+	const leftCountUpRef = useRef<CountUp | null>(null);
+	const rightCountUpRef = useRef<CountUp | null>(null);
+
+	useEffect(() => {
+		if (leftScoreRef.current && !leftCountUpRef.current) {
+			leftCountUpRef.current = new CountUp(leftScoreRef.current, 0, {
+				duration: 0.1,
+				useEasing: false,
+			});
+			leftCountUpRef.current.start();
+		}
+		if (rightScoreRef.current && !rightCountUpRef.current) {
+			rightCountUpRef.current = new CountUp(rightScoreRef.current, 0, {
+				duration: 0.1,
+				useEasing: false,
+			});
+			rightCountUpRef.current.start();
+		}
+	}, []);
+
+	useEffect(() => {
+		if (leftCountUpRef.current) {
+			leftCountUpRef.current.update(leftPlayerScore);
+		}
+	}, [leftPlayerScore]);
+
+	useEffect(() => {
+		if (rightCountUpRef.current) {
+			rightCountUpRef.current.update(rightPlayerScore);
+		}
+	}, [rightPlayerScore]);
 
 	useEffect(() => {
 		const socket = new ReconnectingWebSocket(
@@ -157,8 +192,8 @@ function Gameplay() {
 				<div className="grow"></div>
 				<div className="flex h-60 flex-col items-center justify-between bg-green-500">
 					<div className="flex h-full flex-row items-center justify-center gap-5 text-4xl font-extrabold">
-						<span>{leftPlayerScore}</span>
-						<span>{rightPlayerScore}</span>
+						<span ref={leftScoreRef}>0</span>
+						<span ref={rightScoreRef}>0</span>
 					</div>
 					<div className="flex w-full flex-row justify-between">
 						<div className="flex h-full items-end justify-start">
