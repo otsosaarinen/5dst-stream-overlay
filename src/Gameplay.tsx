@@ -59,24 +59,22 @@ function Gameplay() {
 			setBeatmapTitle(data.beatmap.title);
 			setBeatmapDifficultyName(data.beatmap.version);
 			setBeatmapMapper(data.beatmap.mapper);
-
-			const firstObject = data.beatmap.time.firstObject;
-			const lastObject = data.beatmap.time.lastObject;
-
-			const seconds = Math.floor(
-				((lastObject - firstObject) / 1000) % 60,
-			);
-			const minutes = Math.floor((lastObject - firstObject) / 1000 / 60);
-
-			setBeatmapLength(
-				`${minutes.toString()}:${seconds.toString().padStart(2, "0")}`,
-			);
-
 			setBeatmapSr(data.beatmap.stats.stars.total);
 			setBeatmapAr(data.beatmap.stats.ar.converted);
 			setBeatmapCs(data.beatmap.stats.cs.converted);
 			setBeatmapOd(data.beatmap.stats.od.converted);
 			setBeatmapBpm(data.beatmap.stats.bpm.common);
+
+			// calculate beatmap length
+			const firstObject = data.beatmap.time.firstObject;
+			const lastObject = data.beatmap.time.lastObject;
+			const seconds = Math.floor(
+				((lastObject - firstObject) / 1000) % 60,
+			);
+			const minutes = Math.floor((lastObject - firstObject) / 1000 / 60);
+			setBeatmapLength(
+				`${minutes.toString()}:${seconds.toString().padStart(2, "0")}`,
+			);
 
 			// only set these variables if clients exist
 			if (data.tourney.clients.length > 0) {
@@ -105,7 +103,7 @@ function Gameplay() {
 					<div className="ml-5 text-left">
 						<p className="text-3xl font-semibold">{leftPlayer}</p>
 						<p className="text-xl">{leftPlayerCountry}</p>
-						<p className="text-xl">{leftPlayerScore}</p>
+
 						<div className="flex flex-row gap-2">
 							{Array.from({ length: firstTo }).map((_, index) => (
 								<div
@@ -119,7 +117,7 @@ function Gameplay() {
 					<div className="mr-5 text-right">
 						<p className="text-3xl font-semibold">{rightPlayer}</p>
 						<p className="text-xl">{rightPlayerCountry}</p>
-						<p className="text-xl">{rightPlayerScore}</p>
+
 						<div className="flex flex-row gap-2">
 							{Array.from({ length: firstTo }).map((_, index) => (
 								<div
@@ -131,52 +129,58 @@ function Gameplay() {
 					</div>
 				</div>
 				<div className="grow"></div>
-				<div className="flex h-60 flex-row items-center justify-between bg-green-500">
-					<div className="flex h-full items-end justify-start">
-						<div
-							className="relative h-40 w-2xl bg-cover bg-no-repeat text-white"
-							style={{
-								backgroundImage: `url(https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg)`,
-							}}
-						>
-							<div className="absolute h-full w-full bg-black opacity-70"></div>
-							<div className="relative flex flex-col p-2">
-								<p className="text-2xl font-bold">
-									{beatmapTitle} - {beatmapArtist} [
-									{beatmapDifficultyName}] by {beatmapMapper}
-								</p>
-								<p className="text-xl">
-									SR:{" "}
-									<span className="text-2xl font-bold text-green-500 italic">
-										{beatmapSr}
-									</span>{" "}
-									BPM:{" "}
-									<span className="text-2xl font-bold text-green-500 italic">
-										{beatmapBpm}
-									</span>{" "}
-									Length:{" "}
-									<span className="text-2xl font-bold text-green-500 italic">
-										{beatmapLength}
-									</span>
-								</p>
-								<p className="text-xl">
-									AR:{" "}
-									<span className="text-2xl font-bold text-green-500 italic">
-										{beatmapAr}
-									</span>{" "}
-									OD:{" "}
-									<span className="text-2xl font-bold text-green-500 italic">
-										{beatmapOd}
-									</span>{" "}
-									CS:{" "}
-									<span className="text-2xl font-bold text-green-500 italic">
-										{beatmapCs}
-									</span>
-								</p>
+				<div className="flex h-60 flex-col items-center justify-between bg-green-500">
+					<div className="flex h-full items-center justify-center text-4xl">
+						{leftPlayerScore} {rightPlayerScore}
+					</div>
+					<div className="flex w-full flex-row justify-between">
+						<div className="flex h-full items-end justify-start">
+							<div
+								className="relative h-40 w-2xl bg-cover bg-no-repeat text-white"
+								style={{
+									backgroundImage: `url(https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg)`,
+								}}
+							>
+								<div className="absolute h-full w-full bg-black opacity-65"></div>
+								<div className="relative flex flex-col p-2">
+									<p className="text-2xl font-bold">
+										{beatmapTitle} - {beatmapArtist} [
+										{beatmapDifficultyName}] by{" "}
+										{beatmapMapper}
+									</p>
+									<p className="text-xl">
+										SR:{" "}
+										<span className="text-2xl font-bold text-green-500 italic">
+											{beatmapSr}
+										</span>{" "}
+										BPM:{" "}
+										<span className="text-2xl font-bold text-green-500 italic">
+											{beatmapBpm}
+										</span>{" "}
+										Length:{" "}
+										<span className="text-2xl font-bold text-green-500 italic">
+											{beatmapLength}
+										</span>
+									</p>
+									<p className="text-xl">
+										AR:{" "}
+										<span className="text-2xl font-bold text-green-500 italic">
+											{beatmapAr}
+										</span>{" "}
+										OD:{" "}
+										<span className="text-2xl font-bold text-green-500 italic">
+											{beatmapOd}
+										</span>{" "}
+										CS:{" "}
+										<span className="text-2xl font-bold text-green-500 italic">
+											{beatmapCs}
+										</span>
+									</p>
+								</div>
 							</div>
 						</div>
+						<div className="h-full">chat</div>
 					</div>
-					<div className="h-full">chat</div>
 				</div>
 			</div>
 		</>
